@@ -71,6 +71,7 @@ $(document).ready(function () {
 
     function displayData() {
         var allData = JSON.parse(localStorage.getItem("allData"));
+        console.log(allData);
         if (allData != null) {
             dataLength = Object.keys(allData);
             for (let i = 0; i < dataLength.length; i++) {
