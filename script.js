@@ -3,8 +3,6 @@ $(document).ready(function () {
     var time = new Date();
     var now = time.getHours();
 
-    console.log(window);
-
     const day = time.toDateString();
 
     $("#currentDay").text(day);
@@ -32,20 +30,24 @@ $(document).ready(function () {
         // get localStorage
         var allData = JSON.parse(localStorage.getItem("allData"));
 
-        if (allData === null) {
-            allData = [];
-        }
-        // check to see if row excises
-        dataKeys = Object.keys(allData);
         isDataThere = false;
         dataIndex = 0;
-        for (let i = 0; i < dataKeys.length; i++) {
-            if (allData[i].row === descId) {
-                isDataThere = true;
-                dataIndex = i;
-                break;
+
+        if (allData === null) {
+            allData = [];
+        } else {
+            // check to see if row excises
+            dataKeys = Object.keys(allData);
+
+            for (let i = 0; i < dataKeys.length; i++) {
+                if (allData[i].row === descId) {
+                    isDataThere = true;
+                    dataIndex = i;
+                    break;
+                }
             }
         }
+
         if (isDataThere) {
             allData[dataIndex] = {
                 row: descId,
@@ -69,11 +71,18 @@ $(document).ready(function () {
 
     function displayData() {
         var allData = JSON.parse(localStorage.getItem("allData"));
-        dataLength = Object.keys(allData);
-        for (let i = 0; i < dataLength.length; i++) {
-            let target = $(`[data-time=${allData[i].row}]`);
-            target.val(allData[i].content);
-            console.log(target);
+        if (allData) {
+            dataLength = Object.keys(allData);
+            for (let i = 0; i < dataLength.length; i++) {
+                let target = $(`[data-time=${allData[i].row}]`);
+                target.val(allData[i].content);
+                console.log(target);
+            }
         }
     }
+
+    $(".clearBtn").click(function () {
+        localStorage.clear();
+        window.location.reload();
+    });
 });
